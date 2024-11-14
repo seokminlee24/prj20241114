@@ -15,7 +15,7 @@ export function BoardList() {
       .then((date) => setBoardList(date));
   }, []);
 
-  function handleRowClick() {
+  function handleRowClick(id) {
     navigate(`/view/${id}`);
   }
 
