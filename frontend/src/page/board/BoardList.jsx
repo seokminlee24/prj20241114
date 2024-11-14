@@ -18,7 +18,7 @@ export function BoardList() {
       {/*    게시물들을 테이블로*/}
       {boardList.map((board) => (
         <li>
-          {board.title},{board.writer}
+          {board.title}, {board.writer}
         </li>
       ))}
     </Box>
