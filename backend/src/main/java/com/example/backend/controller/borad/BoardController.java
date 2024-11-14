@@ -14,13 +14,19 @@ public class BoardController {
 
     final BoardService service;
 
-    @PostMapping("add")
-    public void add(@RequestBody Board board) {
-        service.add(board);
+    @GetMapping("view/{id}")
+    public Board view(@PathVariable int id) {
+
+        return service.get(id);
     }
 
     @GetMapping("list")
     public List<Board> list() {
         return service.list();
+    }
+
+    @PostMapping("add")
+    public void add(@RequestBody Board board) {
+        service.add(board);
     }
 }

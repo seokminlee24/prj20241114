@@ -12,8 +12,8 @@ public interface BoardMapper {
 
     @Insert("""
             INSERT INTO board
-                (title,content,writer)
-            VALUES (#{title},#{content},#{writer})
+            (title, content, writer)
+            VALUES (#{title}, #{content}, #{writer})
             """)
     int insert(Board board);
 
@@ -23,4 +23,11 @@ public interface BoardMapper {
             ORDER BY id DESC
             """)
     List<Board> selectAll();
+
+    @Select("""
+            SELECT *
+            FROM board
+            WHERE id = #{id}
+            """)
+    Board selectById(int id);
 }
