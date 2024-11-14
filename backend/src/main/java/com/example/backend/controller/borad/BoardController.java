@@ -1,6 +1,7 @@
 package com.example.backend.controller.borad;
 
 import com.example.backend.dto.borad.Board;
+import com.example.backend.service.borad.BoardService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -12,8 +13,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/board")
 public class BoardController {
 
+    final BoardService service;
+
     @PostMapping("add")
     public void add(@RequestBody Board board) {
-        System.out.println(board);
+        service.add(board);
     }
 }
