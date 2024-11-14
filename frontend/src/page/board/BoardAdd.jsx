@@ -3,6 +3,7 @@ import axios from "axios";
 import { Box, Input, Stack, Textarea } from "@chakra-ui/react";
 import { Field } from "../../components/ui/field.jsx";
 import { Button } from "../../components/ui/button.jsx";
+import { useNavigate } from "react-router-dom";
 
 export function BoardAdd() {
   const [title, setTitle] = useState("");
