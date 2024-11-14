@@ -30,4 +30,10 @@ public class BoardService {
         //return false;
         return cnt == 1;
     }
+
+    public boolean validate(Board board) {
+        boolean title = board.getTitle().trim().length() > 0;
+        boolean content = board.getContent().trim().length() > 0;
+        return title && content;
+    }
 }
