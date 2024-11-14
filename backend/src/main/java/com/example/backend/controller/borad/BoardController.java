@@ -2,6 +2,7 @@ package com.example.backend.controller.borad;
 
 import com.example.backend.dto.borad.Board;
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -10,6 +11,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RequestMapping("/api/board")
 public class BoardController {
+
+    @PostMapping("add")
     public void add(@RequestBody Board board) {
         System.out.println(board);
     }
