@@ -33,7 +33,8 @@ public class BoardService {
                             "text", STR."\{board.getId()} 번 게시물이 등록되었습니다"),
                     "data", board);
         } else {
-            return null;
+            return Map.of("message", Map.of("type", "warning",
+                    "text", "게시물 등록이 실패하였습니다."));
         }
     }
 }
