@@ -9,12 +9,17 @@ export function BoardAdd() {
   const [content, setContent] = useState("");
   const [writer, setWriter] = useState("");
 
+  const navigate = useNavigate();
+
   const handleSaveClick = () => {
-    axios.post("/api/board/add", {
-      title,
-      content,
-      writer,
-    });
+    axios
+      .post("/api/board/add", {
+        title,
+        content,
+        writer,
+      })
+      .then((res) => res.data)
+      .then((data) => navigate(`/view/${data.id}`));
   };
   return (
     <Box>

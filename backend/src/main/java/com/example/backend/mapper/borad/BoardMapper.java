@@ -3,6 +3,7 @@ package com.example.backend.mapper.borad;
 import com.example.backend.dto.borad.Board;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
@@ -15,6 +16,7 @@ public interface BoardMapper {
             (title, content, writer)
             VALUES (#{title}, #{content}, #{writer})
             """)
+    @Options(keyProperty = "id", useGeneratedKeys = true)
     int insert(Board board);
 
     @Select("""
