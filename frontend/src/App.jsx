@@ -4,15 +4,9 @@ import {
   RouterProvider,
   useNavigate,
 } from "react-router-dom";
-import {
-  Box,
-  Button,
-  Field,
-  Flex,
-  Input,
-  Stack,
-  Textarea,
-} from "@chakra-ui/react";
+import { Box, Flex, Input, Stack, Textarea } from "@chakra-ui/react";
+import { Field } from "./components/ui/field.jsx";
+import { Button } from "./components/ui/button.jsx";
 import { useState } from "react";
 import axios from "axios";
 
@@ -53,7 +47,7 @@ function BoardAdd() {
   const [content, setContent] = useState("");
   const [writer, setWriter] = useState("");
 
-  const handleClick = () => {
+  const handleSaveClick = () => {
     axios.post("/api/board/add", {
       title,
       content,
@@ -77,7 +71,7 @@ function BoardAdd() {
           <Input value={writer} onChange={(e) => setWriter(e.target.value)} />
         </Field>
         <Box>
-          <Button onClick={handleClick}>저장</Button>
+          <Button onClick={handleSaveClick}>저장</Button>
         </Box>
       </Stack>
     </Box>
