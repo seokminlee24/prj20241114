@@ -9,7 +9,7 @@ export function BoardList() {
     axios
       .get("/api/board/list")
       .then((res) => res.data)
-      .then((data) => setBoardList(data));
+      .then((date) => setBoardList(date));
   }, []);
 
   return (
@@ -18,7 +18,7 @@ export function BoardList() {
       {/*    게시물들을 테이블로*/}
       {boardList.map((board) => (
         <li>
-          {board.title}, {board.writer}
+          {board.title},{board.writer}
         </li>
       ))}
     </Box>
