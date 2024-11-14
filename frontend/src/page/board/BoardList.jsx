@@ -1,10 +1,12 @@
 import { Box, Table, TableRoot } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 export function BoardList() {
   //const [boardList, setBoardList] = useState("");
   const [boardList, setBoardList] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     axios
@@ -12,6 +14,10 @@ export function BoardList() {
       .then((res) => res.data)
       .then((date) => setBoardList(date));
   }, []);
+
+  function handleRowClick() {
+    navigate(`/view/${id}`);
+  }
 
   return (
     <Box>
@@ -33,7 +39,7 @@ export function BoardList() {
         </Table.Header>
         <Table.Body>
           {boardList.map((board) => (
-            <Table.Row key={board.id}>
+            <Table.Row onClick={() => handleRowClick(board.id)} key={board.id}>
               <Table.Cell>{board.id}</Table.Cell>
               <Table.Cell>{board.title}</Table.Cell>
               <Table.Cell>{board.writer}</Table.Cell>
