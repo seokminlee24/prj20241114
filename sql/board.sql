@@ -9,3 +9,6 @@ CREATE TABLE board
     writer   varchar(100)  NOT NULL,
     inserted DATETIME DEFAULT NOW()
 );
+
+SELECT *
+FROM board;
