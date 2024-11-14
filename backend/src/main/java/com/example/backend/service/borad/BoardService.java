@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 @Transactional
@@ -15,9 +16,6 @@ public class BoardService {
 
     final BoardMapper mapper;
 
-    public void add(Board board) {
-        mapper.insert(board);
-    }
 
     public List<Board> list() {
         return mapper.selectAll();
@@ -25,5 +23,17 @@ public class BoardService {
 
     public Board get(int id) {
         return mapper.selectById(id);
+    }
+
+    public Map<String, Object> add(Board board) {
+        int cnt = mapper.insert(board);
+
+        if (cnt == 1) {
+            return Map.of("message", Map.of("type", "success",
+                            "text", board.getId() + "번 게시물이 등록되었습니다"),
+                    "data", board);
+        } else {
+            return null;
+        }
     }
 }

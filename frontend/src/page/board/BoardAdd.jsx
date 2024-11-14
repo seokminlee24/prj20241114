@@ -22,12 +22,13 @@ export function BoardAdd() {
       })
       .then((res) => res.data)
       .then((data) => {
-        data.message = data.message;
+        const message = data.message;
 
         toaster.create({
           description: message.text,
           type: message.type,
         });
+
         navigate(`/view/${data.data.id}`);
       });
   };
