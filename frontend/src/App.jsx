@@ -4,7 +4,17 @@ import {
   RouterProvider,
   useNavigate,
 } from "react-router-dom";
-import { Box, Flex, Stack } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Field,
+  Flex,
+  Input,
+  Stack,
+  Textarea,
+} from "@chakra-ui/react";
+import { useState } from "react";
+import axios from "axios";
 
 function Navbar() {
   const navigate = useNavigate();
@@ -39,9 +49,37 @@ function BoardList() {
 }
 
 function BoardAdd() {
+  const [title, setTitle] = useState("");
+  const [content, setContent] = useState("");
+  const [writer, setWriter] = useState("");
+
+  const handleClick = () => {
+    axios.post("/api/board/add", {
+      title,
+      content,
+      writer,
+    });
+  };
   return (
     <Box>
       <h3>게시물 작성</h3>
+      <Stack gap={5}>
+        <Field label={"제목"}>
+          <Input value={title} onChange={(e) => setTitle(e.target.value)} />
+        </Field>
+        <Field label={"본문"}>
+          <Textarea
+            value={content}
+            onChange={(e) => setContent(e.target.value)}
+          />
+        </Field>
+        <Field label={"작성자"}>
+          <Input value={writer} onChange={(e) => setWriter(e.target.value)} />
+        </Field>
+        <Box>
+          <Button onClick={handleClick}>저장</Button>
+        </Box>
+      </Stack>
     </Box>
   );
 }
