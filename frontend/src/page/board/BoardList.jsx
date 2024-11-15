@@ -16,10 +16,11 @@ import { Button } from "../../components/ui/button.jsx";
 
 export function BoardList() {
   const [boardList, setBoardList] = useState([]);
-  const navigate = useNavigate();
+
   const [searchParams, setSearchParams] = useSearchParams();
   const [search, setSearch] = useState({ type: "all", keyword: "" });
   const [count, setCount] = useState(0);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const controller = new AbortController();
