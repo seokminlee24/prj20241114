@@ -60,6 +60,11 @@ export function BoardEdit() {
     return <Spinner />;
   }
 
+  // 제목이나 본문이 비어있는 지 확인
+  const disabled = !(
+    board.title.trim().length > 0 && board.content.trim().length > 0
+  );
+
   return (
     <Box>
       <h3>{id}번 게시물 수정</h3>
@@ -82,7 +87,13 @@ export function BoardEdit() {
           onOpenChange={(e) => setDialogOpen(e.open)}
         >
           <DialogTrigger asChild>
-            <Button colorPalette={"cyan"}>저장</Button>
+            <Button
+              disabled={disabled}
+              colorPalette={"cyan"}
+              variant={"outline"}
+            >
+              저장
+            </Button>
           </DialogTrigger>
           <DialogContent>
             <DialogHeader>

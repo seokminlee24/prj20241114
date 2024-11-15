@@ -38,7 +38,7 @@ public interface BoardMapper {
 
     @Update("""
             UPDATE board
-            SET title=#{title}, 
+            SET title=#{title},
                 content=#{content}
             WHERE id=#{id}
             """)
