@@ -20,6 +20,7 @@ export function BoardEdit() {
   const [board, setBoard] = useState(null);
   const { id } = useParams();
   const [progress, setProgress] = useState(false);
+  const [dialogOpen, setDialogOpen] = useState(false);
 
   const navigate = useNavigate();
 
@@ -51,6 +52,7 @@ export function BoardEdit() {
       })
       .finally(() => {
         setProgress(false);
+        setDialogOpen(false);
       });
   };
 
@@ -75,7 +77,10 @@ export function BoardEdit() {
             onChange={(e) => setBoard({ ...board, content: e.target.value })}
           />
         </Field>
-        <DialogRoot>
+        <DialogRoot
+          open={dialogOpen}
+          onOpenChange={(e) => setDialogOpen(e.open)}
+        >
           <DialogTrigger asChild>
             <Button colorPalette={"cyan"}>저장</Button>
           </DialogTrigger>
