@@ -55,7 +55,7 @@ export function BoardEdit() {
         setDialogOpen(false);
       });
   };
-
+  // board가 null일 떄 (첫 렌더)
   if (board === null) {
     return <Spinner />;
   }
