@@ -56,6 +56,13 @@ public class BoardController {
 
     @GetMapping("list")
     public List<Board> list(@RequestParam(value = "page", defaultValue = "1") Integer page) {
+        /*try {
+            if (page % 2 == 0) {
+                Thread.sleep(2000);
+            }
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }*/
         return service.list(page);
     }
 
