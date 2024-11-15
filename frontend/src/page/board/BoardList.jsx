@@ -21,8 +21,8 @@ export function BoardList() {
   const [count, setCount] = useState(0);
   const navigate = useNavigate();
   const [search, setSearch] = useState({
-    type: searchParams.get("st") ? searchParams.get("st") : "all",
-    keyword: searchParams.get("sk") ?? "",
+    type: "all",
+    keyword: "",
   });
 
   useEffect(() => {
@@ -41,6 +41,23 @@ export function BoardList() {
     return () => {
       controller.abort();
     };
+  }, [searchParams]);
+
+  useEffect(() => {
+    const nextSearch = { ...search };
+
+    if (searchParams.get("st")) {
+      nextSearch.type = searchParams.get("st");
+    } else {
+      nextSearch.type = "all";
+    }
+    if (searchParams.get("sk")) {
+      nextSearch.keyword = searchParams.get("sk");
+    } else {
+      nextSearch.keyword = "";
+    }
+
+    setSearch(nextSearch);
   }, [searchParams]);
 
   // searchParams
