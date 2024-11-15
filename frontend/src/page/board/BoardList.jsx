@@ -21,7 +21,7 @@ export function BoardList() {
   const [count, setCount] = useState(0);
   const navigate = useNavigate();
   const [search, setSearch] = useState({
-    type: searchParams.get("st") ?? "all",
+    type: searchParams.get("st") ? searchParams.get("st") : "all",
     keyword: searchParams.get("sk") ?? "",
   });
 
@@ -71,6 +71,7 @@ export function BoardList() {
       const nextSearchParam = new URLSearchParams(searchParams);
       nextSearchParam.set("st", search.type);
       nextSearchParam.set("sk", search.keyword);
+      nextSearchParam.set("page", 1);
 
       setSearchParams(nextSearchParam);
     } else {
