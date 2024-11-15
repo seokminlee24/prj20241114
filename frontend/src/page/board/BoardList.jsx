@@ -22,7 +22,7 @@ export function BoardList() {
       })
       .then((res) => res.data)
       .then((date) => setBoardList(date));
-  }, []);
+  }, [searchParams]);
 
   // searchParams
   console.log(searchParams.toString());
@@ -32,6 +32,12 @@ export function BoardList() {
 
   function handleRowClick(id) {
     navigate(`/view/${id}`);
+  }
+
+  function handlePageChange(e) {
+    const nextSearchParams = new URLSearchParams(searchParams);
+    nextSearchParams.set("page", e.page);
+    setSearchParams(nextSearchParams);
   }
 
   return (
@@ -64,7 +70,12 @@ export function BoardList() {
         </Table.Body>
       </TableRoot>
       <Box>
-        <PaginationRoot count={1500} pageSize={10} page={page}>
+        <PaginationRoot
+          onPageChange={handlePageChange}
+          count={1500}
+          pageSize={10}
+          page={page}
+        >
           <HStack>
             <PaginationPrevTrigger />
             <PaginationItems />
