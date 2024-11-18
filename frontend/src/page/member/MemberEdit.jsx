@@ -72,7 +72,7 @@ export function MemberEdit() {
 
   return (
     <Box>
-      <h3>회원 정보</h3>
+      <h3>회원 정보 변경</h3>
       <Stack gap={5}>
         <Field readOnly label={"아이디"}>
           <Input defaultValue={member.id} />
