@@ -18,8 +18,18 @@ public class memberController {
     final MemberService service;
 
     @PutMapping("update")
-    public void update(@RequestBody MemberEdit member) {
-        service.update(member);
+    public ResponseEntity<Map<String, Object>> update(@RequestBody MemberEdit member) {
+        if (service.update(member)) {
+            //잘됨
+            return ResponseEntity.ok(Map.of("message",
+                    Map.of("type", "success",
+                            "text", "회원정보를 수정하였습니다.")));
+        } else {
+            return ResponseEntity.badRequest()
+                    .body(Map.of("message",
+                            Map.of("type", "warning",
+                                    "text", "정확한 정보를 입력해주세요.")));
+        }
     }
 
     @DeleteMapping("remove")
@@ -29,7 +39,7 @@ public class memberController {
             return ResponseEntity.ok().body(Map.of("message", Map.of("type", "success",
                     "text", "회원정보를 삭제하였습니다.")));
         } else {
-            return ResponseEntity.ok().body(Map.of("message", Map.of("type", "warning",
+            return ResponseEntity.badRequest().body(Map.of("message", Map.of("type", "warning",
                     "text", "회원정보를 삭제중 문제가 생겼습니다.")));
         }
     }
