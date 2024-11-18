@@ -33,6 +33,9 @@ export function MemberEdit() {
       setPassword(res.data.password);
       setDescription(res.data.description);
       setEmail(res.data.email);
+      /* if (res.data.email) {
+               setEmail(res.data.email);
+             }*/
     });
   }, []);
 

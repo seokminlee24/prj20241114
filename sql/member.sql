@@ -14,7 +14,10 @@ FROM member;
 
 DROP TABLE member;
 
+# ALTER TABLE member
+#     ADD COLUMN email VARCHAR(300) UNIQUE AFTER id;
+
 ALTER TABLE member
-    ADD COLUMN email VARCHAR(300) UNIQUE AFTER id;
+    ADD COLUMN email VARCHAR(300) AFTER id;
 
 DESC member;
