@@ -12,13 +12,13 @@ export function MemberList() {
     axios.get("/api/member/list").then((res) => setMemberList(res.data));
   }, []);
 
-  if (!memberList || memberList.length === 0) {
-    return <Spinner />;
-  }
-
   // 테이블 행 클릭시 회원정보 보기로 이동
   function handleRowClick(id) {
-    navigate(`/api/member/${id}`);
+    navigate(`/member/${id}`);
+  }
+
+  if (!memberList || memberList.length === 0) {
+    return <Spinner />;
   }
 
   return (
