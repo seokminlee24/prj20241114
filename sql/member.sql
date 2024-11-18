@@ -10,3 +10,11 @@ CREATE TABLE member
 
 select *
 FROM member;
+
+
+DROP TABLE member;
+
+ALTER TABLE member
+    ADD COLUMN email VARCHAR(300) UNIQUE AFTER id;
+
+DESC member;

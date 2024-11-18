@@ -7,16 +7,18 @@ import { toaster } from "../../components/ui/toaster.jsx";
 import { useNavigate } from "react-router-dom";
 
 export function MemberSignup() {
+  const [email, setEmail] = useState("");
   const [id, setId] = useState("");
   const [password, setPassword] = useState("");
   const [description, setDescription] = useState("");
   const [idCheck, setIdCheck] = useState(false);
-  const [passwordCheck, setPasswordCheck] = useState();
+  const [passwordCheck, setPasswordCheck] = useState("");
+  const [emailCheck, setEmailCheck] = useState(false);
   const navigate = useNavigate();
 
   function handleSaveClick() {
     axios
-      .post("/api/member/signup", { id, password, description })
+      .post("/api/member/signup", { id, email, password, description })
       .then((res) => {
         console.log("잘됨, 페이지 이동, 토스트 출력");
 
@@ -62,6 +64,24 @@ export function MemberSignup() {
       });
   };
 
+  const handleEmailCheckClick = () => {
+    axios
+      .get("/api/member/check", {
+        params: {
+          email: email,
+        },
+      })
+      .then((res) => res.data)
+      .then((data) => {
+        const message = data.message;
+        toaster.create({
+          type: message.type,
+          description: message.text,
+        });
+        setEmailCheck(data.available);
+      });
+  };
+
   //가입 버튼 비활성화 여부
   let disabled = true;
   if (idCheck) {
@@ -83,6 +103,14 @@ export function MemberSignup() {
               }}
             />
             <Button onClick={handleIdCheckClick} variant={"outline"}>
+              중복확인
+            </Button>
+          </Group>
+        </Field>
+        <Field label={"이메일"}>
+          <Group>
+            <Input value={email} onChange={(e) => setEmail(e.target.value)} />
+            <Button onClick={handleEmailCheckClick} variant={"outline"}>
               중복확인
             </Button>
           </Group>

@@ -10,8 +10,8 @@ import java.util.List;
 public interface MemberMapper {
     @Insert("""
             INSERT INTO prj20241114.member
-                (id, password, description) 
-            VALUES (#{id}, #{password}, #{description})
+                (id,email, password, description) 
+            VALUES (#{id},#{email}, #{password}, #{description})
             """)
     int insert(Member member);
 
@@ -33,7 +33,7 @@ public interface MemberMapper {
             WHERE id = #{id}
             """)
     int deleteById(String id);
-    
+
     @Update("""
             UPDATE member
             set password = #{password},
@@ -42,4 +42,11 @@ public interface MemberMapper {
                 id=#{id}
             """)
     int update(MemberEdit member);
+
+    @Select("""
+            SELECT *
+            FROM member
+            WHERE email = #{email}
+            """)
+    Member selectByEmail(String email);
 }
