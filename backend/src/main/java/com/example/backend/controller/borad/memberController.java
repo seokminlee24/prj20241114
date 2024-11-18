@@ -17,8 +17,15 @@ public class memberController {
     final MemberService service;
 
     @DeleteMapping("remove")
-    public void remove(@RequestBody Member member) {
-        service.remove(member);
+    public ResponseEntity<Map<String, Object>> remove(@RequestBody Member member) {
+        if (service.remove(member)) {
+            //잘됨
+            return ResponseEntity.ok().body(Map.of("message", Map.of("type", "success",
+                    "text", "회원정보를 삭제하였습니다.")));
+        } else {
+            return ResponseEntity.ok().body(Map.of("message", Map.of("type", "warning",
+                    "text", "회원정보를 삭제중 문제가 생겼습니다.")));
+        }
     }
 
     @GetMapping("{id}")
