@@ -40,9 +40,10 @@ export function MemberInfo() {
           type: message.type,
           description: message.text,
         });
+        navigate("/member/signup");
       })
-      .catch((data) => {
-        const message = data.data.message;
+      .catch((e) => {
+        const message = e.data.message;
 
         toaster.create({
           type: message.type,
