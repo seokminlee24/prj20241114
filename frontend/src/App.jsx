@@ -5,6 +5,7 @@ import { RootLayout } from "./page/root/RootLayout.jsx";
 import { BoardView } from "./page/board/BoardView.jsx";
 import { BoardEdit } from "./page/board/BoardEdit.jsx";
 import { MemberSignup } from "./page/member/MemberSignup.jsx";
+import { MemberList } from "./page/member/MemberList.jsx";
 
 const router = createBrowserRouter([
   {
@@ -34,7 +35,11 @@ const router = createBrowserRouter([
       },
       {
         path: "member/list",
-        element: <div>회원목록</div>,
+        element: (
+          <div>
+            <MemberList />
+          </div>
+        ),
       },
       {
         path: "member/:id",

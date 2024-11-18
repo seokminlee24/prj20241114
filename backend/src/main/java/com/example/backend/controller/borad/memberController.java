@@ -7,6 +7,7 @@ import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -14,6 +15,11 @@ import java.util.Map;
 @RequestMapping("/api/member")
 public class memberController {
     final MemberService service;
+
+    @GetMapping("list")
+    public List<Member> list() {
+        return service.list();
+    }
 
     @GetMapping("check")
     public ResponseEntity<Map<String, Object>> checkId(@RequestParam String id) {
