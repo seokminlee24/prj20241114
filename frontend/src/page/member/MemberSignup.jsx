@@ -82,11 +82,17 @@ export function MemberSignup() {
       });
   };
 
+  // 이메일 중복확인 버튼 활성화 여부
+  let emailCheckButtonDisabled = email.length === 0;
+
   //가입 버튼 비활성화 여부
   let disabled = true;
+
   if (idCheck) {
-    if (password === passwordCheck) {
-      disabled = false;
+    if (emailCheck) {
+      if (password === passwordCheck) {
+        disabled = false;
+      }
     }
   }
   return (
@@ -109,7 +115,19 @@ export function MemberSignup() {
         </Field>
         <Field label={"이메일"}>
           <Group>
-            <Input value={email} onChange={(e) => setEmail(e.target.value)} />
+            <Input
+              value={email}
+              onChange={(e) => {
+                setEmail(e.target.value);
+                // 이메일은 필수 입력이 아니어서
+                // 입력하지 않을 겨우 중복체크 하지 않아도됨
+                if (e.target.value.length > 0) {
+                  setEmailCheck(false);
+                } else {
+                  setEmailCheck(true);
+                }
+              }}
+            />
             <Button onClick={handleEmailCheckClick} variant={"outline"}>
               중복확인
             </Button>
