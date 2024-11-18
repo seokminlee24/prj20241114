@@ -31,7 +31,7 @@ export function MemberInfo() {
   function handleDeleteClick() {
     axios
       .delete("/api/member/remove", {
-        data: { id, password: password },
+        data: { id, password },
       })
       .then((res) => {
         const message = res.data.message;
@@ -52,7 +52,8 @@ export function MemberInfo() {
       })
       .finally(() => {
         setOpen(false);
-      }, setPassword(""));
+        setPassword("");
+      });
   }
 
   if (!member) {
@@ -92,6 +93,7 @@ export function MemberInfo() {
                 <Stack gap={5}>
                   <Field label={"암호"}>
                     <Input
+                      placeholder={"암호를 입력해주세요."}
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
                     />

@@ -1,6 +1,6 @@
+import { Box, Spinner, Table } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { Spinner, Table } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 
 export function MemberList() {
@@ -12,7 +12,7 @@ export function MemberList() {
     axios.get("/api/member/list").then((res) => setMemberList(res.data));
   }, []);
 
-  // 테이블 행 클릭시 회원정보 보기로 이동
+  // 테이블 행 클릭시 회원정보보기로 이동
   function handleRowClick(id) {
     navigate(`/member/${id}`);
   }
@@ -22,8 +22,8 @@ export function MemberList() {
   }
 
   return (
-    <div>
-      <h3>회원목록</h3>
+    <Box>
+      <h3>회원 목록</h3>
 
       <Table.Root interactive>
         <Table.Header>
@@ -36,10 +36,8 @@ export function MemberList() {
         <Table.Body>
           {memberList.map((member) => (
             <Table.Row
+              onClick={() => handleRowClick(member.id)}
               key={member.id}
-              onClick={() => {
-                handleRowClick(member.id);
-              }}
             >
               <Table.Cell>{member.id}</Table.Cell>
               <Table.Cell>{member.email}</Table.Cell>
@@ -48,6 +46,6 @@ export function MemberList() {
           ))}
         </Table.Body>
       </Table.Root>
-    </div>
+    </Box>
   );
 }
