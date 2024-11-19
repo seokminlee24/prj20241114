@@ -60,16 +60,20 @@ public class memberController {
 
 
     }
-
+    @PreAuthorize("isAuthenticated()")
     @DeleteMapping("remove")
-    public ResponseEntity<Map<String, Object>> remove(@RequestBody Member member) {
-        if (service.remove(member)) {
-            //잘됨
-            return ResponseEntity.ok().body(Map.of("message", Map.of("type", "success",
-                    "text", "회원정보를 삭제하였습니다.")));
-        } else {
-            return ResponseEntity.badRequest().body(Map.of("message", Map.of("type", "warning",
-                    "text", "회원정보를 삭제중 문제가 생겼습니다.")));
+    public ResponseEntity<Map<String, Object>> remove(@RequestBody Member member,Authentication authentication) {
+        if (service.hashCode(member.getId(), authentication)) {
+            if (service.remove(member)) {
+                //잘됨
+                return ResponseEntity.ok().body(Map.of("message", Map.of("type", "success",
+                        "text", "회원정보를 삭제하였습니다.")));
+            } else {
+                return ResponseEntity.badRequest().body(Map.of("message", Map.of("type", "warning",
+                        "text", "회원정보를 삭제중 문제가 생겼습니다.")));
+            }
+        }else {
+            return ResponseEntity.status(403).build();
         }
     }
 
