@@ -5,7 +5,7 @@ import { jwtDecode } from "jwt-decode";
 export const AuthenticationContext = createContext(null);
 
 function AuthenticationProvider({ children }) {
-    const [userToken, setUserToken] = useState({})
+    const [userToken, setUserToken] = useState({});
 
     useEffect(() => {
         const token = localStorage.getItem("token");
@@ -26,12 +26,12 @@ function AuthenticationProvider({ children }) {
         setUserToken({});
     }
 
-    function isAuthenticated(){
-       return Date.now() < userToken.exp *1000;
-    }
+    const isAuthenticated = Date.now() < userToken.exp * 1000;
 
     return (
-        <AuthenticationContext.Provider value={{ id: userToken.sub, login, logout ,isAuthenticated }}>
+        <AuthenticationContext.Provider
+            value={{ id: userToken.sub, login, logout, isAuthenticated }}
+        >
             {children}
         </AuthenticationContext.Provider>
     );
