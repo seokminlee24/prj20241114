@@ -78,9 +78,9 @@ public class memberController {
     }
 
     @GetMapping("{id}")
-    @PreAuthorize("isAuthenticated()")
+    @PreAuthorize("isAuthenticated() or hasAuthority('SCOPE_admin')")
     public ResponseEntity<Member> getMember(@PathVariable String id, Authentication authentication) {
-        if (service.hashCode(id, authentication)) {
+        if (service.hashCode(id, authentication) || service.isAdmin(authentication)) {
             return ResponseEntity.ok(service.get(id));
         } else {
             return ResponseEntity.status(403).build();
