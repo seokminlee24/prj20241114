@@ -22,13 +22,7 @@ export function BoardAdd() {
             {
               title,
               content,
-            },
-            {
-              headers: {
-                Authorization: `Bearer ${localStorage.getItem("token")}`,
-              },
-            },
-        )
+            })
         .then((res) => res.data)
         .then((data) => {
           const message = data.message;
