@@ -13,6 +13,7 @@ import axios from "axios";
 
 import { createContext } from "react";
 import { jwtDecode } from "jwt-decode";
+import AuthenticationProvider from "./components/content/AuthenticationProvider.jsx";
 
 // axios 인터셉터 설정
 axios.interceptors.request.use(function (config) {
@@ -59,18 +60,13 @@ const router = createBrowserRouter([
   },
 ]);
 
-// step 1 : context 만들기
-export const AuthenticationContext = createContext(null);
 
 function App() {
-  const token = localStorage.getItem("token");
-  const decoded = jwtDecode(token);
-  const id = decoded.sub;
 
   return (
-      <AuthenticationContext.Provider value={{ id: id }}>
+      <AuthenticationProvider>
         <RouterProvider router={router} />
-      </AuthenticationContext.Provider>
+      </AuthenticationProvider>
   );
 }
 
