@@ -14,9 +14,11 @@ import axios from "axios";
 // axios 인터셉터 설정
 axios.interceptors.request.use(function (config) {
   const token = localStorage.getItem("token");
-  if (!token) {
+
+  if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }
+
   return config;
 });
 
@@ -38,47 +40,18 @@ const router = createBrowserRouter([
         path: "view/:id",
         element: <BoardView />,
       },
-      { path: "edit/:id", element: <BoardEdit /> },
       {
-        path: "member/signup",
-        element: (
-          <div>
-            <MemberSignup />
-          </div>
-        ),
+        path: "edit/:id",
+        element: <BoardEdit />,
       },
-      {
-        path: "member/list",
-        element: (
-          <div>
-            <MemberList />
-          </div>
-        ),
-      },
+      { path: "member/signup", element: <MemberSignup /> },
+      { path: "member/list", element: <MemberList /> },
       {
         path: "member/:id",
-        element: (
-          <div>
-            <MemberInfo />
-          </div>
-        ),
+        element: <MemberInfo />,
       },
-      {
-        path: "member/edit/:id",
-        element: (
-          <div>
-            <MemberEdit />
-          </div>
-        ),
-      },
-      {
-        path: "member/login",
-        element: (
-          <div>
-            <MemberLogin />
-          </div>
-        ),
-      },
+      { path: "member/edit/:id", element: <MemberEdit /> },
+      { path: "member/login", element: <MemberLogin /> },
     ],
   },
 ]);
