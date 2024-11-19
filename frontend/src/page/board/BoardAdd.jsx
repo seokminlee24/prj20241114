@@ -17,12 +17,10 @@ export function BoardAdd() {
     setProgress(true);
 
     axios
-        .post(
-            "/api/board/add",
-            {
-              title,
-              content,
-            })
+        .post("/api/board/add", {
+          title,
+          content,
+        })
         .then((res) => res.data)
         .then((data) => {
           const message = data.message;
