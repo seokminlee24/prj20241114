@@ -59,4 +59,10 @@ public class BoardService {
         return cnt == 1;
         //return false;
     }
+
+    public boolean hashCode(int id, Authentication authentication) {
+         Board board = mapper.selectById(id);
+
+         return board.getWriter().equals(authentication.getName());
+    }
 }
