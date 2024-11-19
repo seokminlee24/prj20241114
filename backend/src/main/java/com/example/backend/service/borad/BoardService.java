@@ -3,6 +3,7 @@ package com.example.backend.service.borad;
 import com.example.backend.dto.borad.Board;
 import com.example.backend.mapper.borad.BoardMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,7 +33,9 @@ public class BoardService {
         return mapper.selectById(id);
     }
 
-    public Boolean add(Board board) {
+    public boolean add(Board board, Authentication authentication) {
+        board.setWriter(authentication.getName());
+
         int cnt = mapper.insert(board);
 
         //return false;
@@ -51,6 +54,7 @@ public class BoardService {
     }
 
     public boolean update(Board board) {
+
         int cnt = mapper.update(board);
         return cnt == 1;
         //return false;
