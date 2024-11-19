@@ -12,6 +12,7 @@ VALUES ('leedero','admin');
 INSERT INTO auth(member_id, auth)
 VALUES ('leedero','manager');
 
+
 DESC member;
 
 DESC auth;
