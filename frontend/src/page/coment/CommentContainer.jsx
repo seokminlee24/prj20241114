@@ -42,7 +42,17 @@ export function CommentContainer({ boardId }) {
         setProcessing(true);
         axios.delete(`/api/comment/remove/${id}`).finally(() => {
             setProcessing(false);
-        });
+        })
+            .then((res) => res.data.message)
+            .then((message) => {
+                toaster.create({
+                    type: message.type,
+                    description: message.text,
+                });
+            })
+            .finally(() => {
+                setProcessing(false);
+            });
     }
 
     function handleEditClick(id, comment) {

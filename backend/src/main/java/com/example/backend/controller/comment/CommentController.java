@@ -41,9 +41,21 @@ public class CommentController {
 
     @DeleteMapping("remove/{id}")
     @PreAuthorize("isAuthenticated()")
-    public void remove(@PathVariable Integer id, Authentication auth) {
+    public ResponseEntity<Map<String, Object>> remove(@PathVariable Integer id, Authentication auth) {
         if (service.hashCode(id, auth)) {
-            service.remove(id);
+            if (service.remove(id)){
+                return ResponseEntity.ok().body(Map.of("message",
+                        Map.of("type", "success",
+                                "text", "댓글이 삭제되었습니다.")));
+            }else {
+                return ResponseEntity.internalServerError().body(Map.of("message",
+                        Map.of("type", "error",
+                                "text", "댓글이 삭제되지 않았습니다.")));
+            }
+        }else {
+            return ResponseEntity.status(403).body(Map.of("message",
+                    Map.of("type", "error",
+                            "text", "삭제 권한이 없습니다.")));
         }
     }
 

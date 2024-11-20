@@ -30,8 +30,9 @@ public class CommentService {
         return comment.getMemberId().equals(auth.getName());
     }
 
-    public void remove(Integer id) {
-        mapper.deleteById(id);
+    public boolean remove(Integer id) {
+        int cnt = mapper.deleteById(id);
+        return cnt == 1 ;
     }
 
     public boolean update(Comment comment) {
