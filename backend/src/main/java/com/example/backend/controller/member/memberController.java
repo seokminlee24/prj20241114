@@ -1,4 +1,4 @@
-package com.example.backend.controller.borad;
+package com.example.backend.controller.member;
 
 import com.example.backend.dto.member.Member;
 import com.example.backend.dto.member.MemberEdit;
