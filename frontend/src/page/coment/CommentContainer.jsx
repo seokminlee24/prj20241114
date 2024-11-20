@@ -45,8 +45,8 @@ export function CommentContainer({ boardId }) {
         });
     }
 
-    function handleEditClick(id,comment) {
-        setProcessing(true)
+    function handleEditClick(id, comment) {
+        setProcessing(true);
 
         axios
             .put(`/api/comment/edit`, { id, comment })
