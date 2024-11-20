@@ -1,19 +1,18 @@
+import { Box, Flex, HStack, Textarea } from "@chakra-ui/react";
+
+import { useContext, useState } from "react";
+
+import {Button} from "../../components/ui/button.jsx";
 import {
-    Box,
-    Button, DialogActionTrigger,
+    DialogActionTrigger,
     DialogBody,
     DialogContent, DialogFooter,
     DialogHeader,
-    DialogRoot, DialogTitle,
-    DialogTrigger,
-    Flex,
-    HStack
-} from "@chakra-ui/react";
-
-import { useContext, useState } from "react";
+    DialogRoot,
+    DialogTitle,
+    DialogTrigger
+} from "../../components/ui/dialog.jsx";
 import {AuthenticationContext} from "../../components/content/AuthenticationProvider.jsx";
-
-
 
 function DeleteButton({ onClick }) {
     const [open, setOpen] = useState(false);
@@ -45,7 +44,47 @@ function DeleteButton({ onClick }) {
     );
 }
 
-export function CommentItem({ comment, onDeleteClick }) {
+function EditButton({ comment, onEditClick }) {
+    const [open, setOpen] = useState(false);
+    const [newComment, setNewComment] = useState(comment.comment);
+
+    return (
+        <>
+            <DialogRoot open={open} onOpenChange={(e) => setOpen(e.open)}>
+                <DialogTrigger asChild>
+                    <Button colorPalette={"purple"}>수정</Button>
+                </DialogTrigger>
+                <DialogContent>
+                    <DialogHeader>
+                        <DialogTitle>댓글 수정</DialogTitle>
+                    </DialogHeader>
+                    <DialogBody>
+                        <Textarea
+                            value={newComment}
+                            onChange={(e) => setNewComment(e.target.value)}
+                        />
+                    </DialogBody>
+                    <DialogFooter>
+                        <DialogActionTrigger>
+                            <Button variant={"outline"}>취소</Button>
+                        </DialogActionTrigger>
+                        <Button
+                            colorPalette={"purple"}
+                            onClick={() => {
+                                setOpen(false);
+                                onEditClick(comment.id, newComment);
+                            }}
+                        >
+                            수정
+                        </Button>
+                    </DialogFooter>
+                </DialogContent>
+            </DialogRoot>
+        </>
+    );
+}
+
+export function CommentItem({ comment, onDeleteClick, onEditClick }) {
     const { hasAccess } = useContext(AuthenticationContext);
 
     return (
@@ -59,7 +98,7 @@ export function CommentItem({ comment, onDeleteClick }) {
             </Box>
             {hasAccess(comment.memberId) && (
                 <Box>
-                    <Button colorPalette={"purple"}>수정</Button>
+                    <EditButton comment={comment} onEditClick={onEditClick} />
 
                     <DeleteButton onClick={() => onDeleteClick(comment.id)} />
                 </Box>
