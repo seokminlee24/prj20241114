@@ -23,6 +23,7 @@ public class CommentController {
     public ResponseEntity<Map<String, Object>> edit(
             @RequestBody Comment comment,
             Authentication authentication) {
+        System.out.println("comment = " + comment);
         if (service.hashCode(comment.getId(), authentication)) {
             if (service.update(comment)) {
                 return ResponseEntity.ok().body(Map.of("message",
