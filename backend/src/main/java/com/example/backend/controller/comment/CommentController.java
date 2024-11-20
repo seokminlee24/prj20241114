@@ -23,7 +23,6 @@ public class CommentController {
     public ResponseEntity<Map<String, Object>> edit(
             @RequestBody Comment comment,
             Authentication authentication) {
-        System.out.println("comment = " + comment);
         if (service.hashCode(comment.getId(), authentication)) {
             if (service.update(comment)) {
                 return ResponseEntity.ok().body(Map.of("message",
@@ -42,8 +41,8 @@ public class CommentController {
 
     @DeleteMapping("remove/{id}")
     @PreAuthorize("isAuthenticated()")
-    public void remove(@PathVariable Integer id,Authentication auth) {
-        if (service.hashCode(id,auth)){
+    public void remove(@PathVariable Integer id, Authentication auth) {
+        if (service.hashCode(id, auth)) {
             service.remove(id);
         }
     }
