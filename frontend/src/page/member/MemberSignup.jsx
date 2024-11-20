@@ -119,7 +119,7 @@ export function MemberSignup() {
           </Group>
         </Field>
         <Field label={"이메일"}>
-          <Group>
+          <Group attached w={"100%"}>
             <Input
               value={email}
               onChange={(e) => {
