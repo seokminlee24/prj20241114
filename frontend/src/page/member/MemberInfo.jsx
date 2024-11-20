@@ -1,6 +1,6 @@
 import { Box, Input, Spinner, Stack, Textarea } from "@chakra-ui/react";
 import { useNavigate, useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
+import {useContext, useEffect, useState} from "react";
 import axios from "axios";
 import { Field } from "../../components/ui/field.jsx";
 import { Button } from "../../components/ui/button.jsx";
@@ -15,11 +15,15 @@ import {
   DialogTrigger,
 } from "../../components/ui/dialog.jsx";
 import { toaster } from "../../components/ui/toaster.jsx";
+import authenticationProvider, {AuthenticationContext} from "../../components/content/AuthenticationProvider.jsx";
 
 export function MemberInfo() {
   const [member, setMember] = useState(null);
   const [password, setPassword] = useState("");
   const [open, setOpen] = useState(false);
+
+  const {hasAccess} = useContext(AuthenticationContext)
+
   const { id } = useParams();
   const navigate = useNavigate();
 
@@ -79,7 +83,8 @@ export function MemberInfo() {
         <Field label={"가입일시"}>
           <Input type={"datetime-local"} readOnly value={member.inserted} />
         </Field>
-        <Box>
+        {hasAccess(id)&&(
+          <Box>
           <Button onClick={() => navigate(`/member/edit/${id}`)}>수정</Button>
           <DialogRoot open={open} onOpenChange={(e) => setOpen(e.open)}>
             <DialogTrigger asChild>
@@ -93,9 +98,9 @@ export function MemberInfo() {
                 <Stack gap={5}>
                   <Field label={"암호"}>
                     <Input
-                      placeholder={"암호를 입력해주세요."}
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
+                        placeholder={"암호를 입력해주세요."}
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
                     />
                   </Field>
                 </Stack>
@@ -110,7 +115,7 @@ export function MemberInfo() {
               </DialogFooter>
             </DialogContent>
           </DialogRoot>
-        </Box>
+        </Box>)}
       </Stack>
     </Box>
   );
