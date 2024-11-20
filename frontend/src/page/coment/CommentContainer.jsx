@@ -6,18 +6,24 @@ import axios from "axios";
 
 export function CommentContainer({ boardId }) {
     const [commentList, setCommentList] = useState([]);
+    const [processing, setProcessing] = useState(false)
 
     useEffect(() => {
-        axios
-            .get(`/api/comment/list/${boardId}`)
-            .then((res) => res.data)
-            .then((data) => setCommentList(data));
-    }, []);
+        if (!processing) {
+            axios
+                .get(`/api/comment/list/${boardId}`)
+                .then((res) => res.data)
+                .then((data) => setCommentList(data));
+        }
+    }, [processing]);
 
     function handleSaveClick(comment) {
+        setProcessing(true)
         axios.post("/api/comment/add", {
             boardId: boardId,
             comment: comment,
+        }).finally(()=>{
+            setProcessing(false)
         });
     }
 
