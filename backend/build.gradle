@@ -25,6 +25,7 @@ repositories {
 
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'software.amazon.awssdk:s3:2.29.17'
     implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.3'
     implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'
     compileOnly 'org.projectlombok:lombok'
@@ -43,3 +44,8 @@ tasks.named('test') {
 compileJava {
     options.compilerArgs += ['--enable-preview']
 }
+
+// https://mvnrepository.com/artifact/software.amazon.awssdk/s3
+
+
+
