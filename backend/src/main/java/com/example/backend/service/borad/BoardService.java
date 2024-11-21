@@ -33,7 +33,9 @@ public class BoardService {
     }
 
     public Board get(int id) {
-        return mapper.selectById(id);
+        Board board = mapper.selectById(id);
+        board.setFileSrc(mapper.selectFilesByBoardId(id));
+        return board;
     }
 
     public boolean add(Board board, MultipartFile[] files, Authentication authentication) {

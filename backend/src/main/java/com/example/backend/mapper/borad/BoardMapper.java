@@ -87,4 +87,11 @@ public interface BoardMapper {
             VALUES (#{id}, #{fileName})
             """)
     int insertFile(Integer id, String fileName); // 마퍼에서는 fileName 같아야한다
+
+    @Select("""
+            SELECT name 
+            FROM board_file
+            WHERE board_id = #{id}
+            """)
+    List<String> selectFilesByBoardId(int id);
 }
