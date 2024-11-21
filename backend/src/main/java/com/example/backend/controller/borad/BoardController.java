@@ -9,6 +9,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -20,13 +21,15 @@ public class BoardController {
 
     @PutMapping("update")
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<Map<String, Object>> update(@RequestBody Board board,
-                                                      Authentication authentication) {
-        if (service.hashCode(board.getId(),authentication)) {
+    public ResponseEntity<Map<String, Object>> update(
+            Board board,
+            @RequestParam(value = "removeFiles[]", required = false) List<String> removeFiles,
+            Authentication authentication) {
+        if (service.hasAccess(board.getId(), authentication)) {
 
 
             if (service.validate(board)) {
-                if (service.update(board)) {
+                if (service.update(board, removeFiles)) {
                     return ResponseEntity.ok()
                             .body(Map.of("message", Map.of("type", "success",
                                     "text", STR."\{board.getId()}번 게시물이 수정되었습니다.")));
@@ -50,9 +53,10 @@ public class BoardController {
 
     @DeleteMapping("delete/{id}")
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<Map<String, Object>> delete(@PathVariable int id,
-                                                      Authentication authentication) {
-        if (service.hashCode(id,authentication)){
+    public ResponseEntity<Map<String, Object>> delete(
+            @PathVariable int id,
+            Authentication authentication) {
+        if (service.hasAccess(id, authentication)) {
             if (service.remove(id)) {
                 return ResponseEntity.ok()
                         .body(Map.of("message", Map.of("type", "success"
@@ -62,10 +66,11 @@ public class BoardController {
                         .body(Map.of("message", Map.of("type", "error"
                                 , "text", "게시글 삭제 중 문제가 발생하였습니다.")));
             }
-        }else {
+
+        } else {
             return ResponseEntity.status(403)
-                    .body(Map.of("message", Map.of("type", "error",
-                            "text","권한 없음")));
+                    .body(Map.of("message", Map.of("type", "error"
+                            , "text", "삭제 권한이 없습니다.")));
         }
     }
 
@@ -76,19 +81,14 @@ public class BoardController {
     }
 
     @GetMapping("list")
-    public Map<String, Object> list(@RequestParam(value = "page", defaultValue = "1") Integer page,
-                                    @RequestParam(value = "st", defaultValue = "all") String searchType,
-                                    @RequestParam(value = "sk", defaultValue = "") String keyword) {
-        /*try {
-            if (page % 2 == 0) {
-                Thread.sleep(2000);
-            }
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }*/
+    public Map<String, Object> list(
+            @RequestParam(value = "page", defaultValue = "1") Integer page,
+            @RequestParam(value = "st", defaultValue = "all") String searchType,
+            @RequestParam(value = "sk", defaultValue = "") String keyword) {
 
         System.out.println(searchType);
         System.out.println(keyword);
+
         return service.list(page, searchType, keyword);
     }
 
@@ -116,4 +116,5 @@ public class BoardController {
         }
 
     }
+
 }

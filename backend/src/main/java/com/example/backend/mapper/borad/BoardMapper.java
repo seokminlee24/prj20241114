@@ -49,11 +49,13 @@ public interface BoardMapper {
 
     @Select("""
             <script>
-                SELECT b.id, b.title, b.writer, b.inserted, COUNT(DISTINCT c.id) countComment, COUNT(DISTINCT f.name) countFile
+                SELECT b.id, b.title, b.writer, b.inserted,
+                        COUNT(DISTINCT c.id) countComment, COUNT(DISTINCT f.name) countFile
+            
                 FROM board b LEFT JOIN comment c
-                             ON b.id = c.board_id
-                            LEFT JOIN board_file f 
-                            ON f.board_id = b.id
+                                ON b.id = c.board_id
+                             LEFT JOIN board_file f 
+                                ON b.id = f.board_id
                 WHERE 
                     <trim prefixOverrides="OR">
                         <if test="searchType == 'all' or searchType == 'title'">
@@ -90,7 +92,7 @@ public interface BoardMapper {
             INSERT INTO board_file
             VALUES (#{id}, #{fileName})
             """)
-    int insertFile(Integer id, String fileName); // 마퍼에서는 fileName 같아야한다
+    int insertFile(Integer id, String fileName);
 
     @Select("""
             SELECT name 
@@ -98,7 +100,6 @@ public interface BoardMapper {
             WHERE board_id = #{id}
             """)
     List<String> selectFilesByBoardId(int id);
-
 
     @Delete("""
             DELETE FROM board_file
@@ -112,4 +113,12 @@ public interface BoardMapper {
             WHERE writer = #{id}
             """)
     List<Integer> selectByWriter(String id);
+
+
+    @Delete("""
+            DELETE FROM board_file
+            WHERE board_id = #{id}
+              AND name = #{name}
+            """)
+    int deleteFileByBoardIdAndName(Integer id, String name);
 }

@@ -23,6 +23,7 @@ import {
   DialogTrigger,
 } from "../../components/ui/dialog.jsx";
 import { toaster } from "../../components/ui/toaster.jsx";
+
 import { Switch } from "../../components/ui/switch.jsx";
 import {AuthenticationContext} from "../../components/content/AuthenticationProvider.jsx";
 
@@ -71,7 +72,12 @@ export function BoardEdit() {
     setProgress(true);
 
     axios
-        .put("/api/board/update", board)
+        .putForm("/api/board/update", {
+          id: board.id,
+          title: board.title,
+          content: board.content,
+          removeFiles,
+        })
         .then((res) => res.data)
         .then((data) => {
           toaster.create({

@@ -26,8 +26,8 @@ import java.util.Map;
 @Transactional
 @RequiredArgsConstructor
 public class BoardService {
-    final CommentMapper commentMapper;
     final BoardMapper mapper;
+    final CommentMapper commentMapper;
     final S3Client s3;
 
     @Value("${image.src.prefix}")
@@ -35,28 +35,6 @@ public class BoardService {
 
     @Value("${bucket.name}")
     String bucketName;
-
-    public Map<String, Object> list(Integer page, String searchType, String keyword) {
-        // SQL 의 LIMIT 키워드에서 사용되는 offset
-        Integer offset = (page - 1) * 10;
-        // 조회되는 게시물들
-        List<Board> list = mapper.selectPage(offset, searchType, keyword);
-        // 전체 게시물 수
-        Integer count = mapper.countAll(searchType, keyword);
-        return Map.of("list", list,
-                "count", count);
-    }
-
-    public Board get(int id) {
-        Board board = mapper.selectById(id);
-        List<String> fileNameList =  mapper.selectFilesByBoardId(id);
-        List<BoardFile> fileSrcList = fileNameList.stream()
-                .map(name->new BoardFile(name,STR." {imageSrcPrefix}/\{id}/\{name}"))
-                        .toList();
-        //  http://172.30.1.9:8081
-        board.setFileList(fileSrcList);
-        return board;
-    }
 
     public boolean add(Board board, MultipartFile[] files, Authentication authentication) {
 
@@ -67,13 +45,6 @@ public class BoardService {
 
         if (files != null && files.length > 0) {
 
-            // 폴더 만들기
-            String directory = STR."C:/Temp/prj1114/\{board.getId()}";
-            File dir = new File(directory);
-            if (!dir.exists()) {
-                dir.mkdirs();
-            }
-
             // 파일 업로드
             for (MultipartFile file : files) {
 
@@ -83,6 +54,8 @@ public class BoardService {
                         .key(objectKey)
                         .acl(ObjectCannedACL.PUBLIC_READ)
                         .build();
+
+
                 try {
                     s3.putObject(por, RequestBody.fromInputStream(file.getInputStream(), file.getSize()));
                 } catch (IOException e) {
@@ -100,9 +73,36 @@ public class BoardService {
 
     }
 
+    public Map<String, Object> list(Integer page, String searchType, String keyword) {
+        // SQL 의 LIMIT 키워드에서 사용되는 offset
+        Integer offset = (page - 1) * 10;
+
+        // 조회되는 게시물들
+        List<Board> list = mapper.selectPage(offset, searchType, keyword);
+
+        // 전체 게시물 수
+        Integer count = mapper.countAll(searchType, keyword);
+
+        return Map.of("list", list,
+                "count", count);
+
+    }
+
+    public Board get(int id) {
+        Board board = mapper.selectById(id);
+        List<String> fileNameList = mapper.selectFilesByBoardId(id);
+        List<BoardFile> fileSrcList = fileNameList.stream()
+                .map(name -> new BoardFile(name, STR."\{imageSrcPrefix}/\{id}/\{name}"))
+                .toList();
+
+        board.setFileList(fileSrcList);
+        return board;
+    }
+
     public boolean validate(Board board) {
         boolean title = board.getTitle().trim().length() > 0;
         boolean content = board.getContent().trim().length() > 0;
+
         return title && content;
     }
 
@@ -110,34 +110,51 @@ public class BoardService {
         // 첨부파일 지우기
         // 실제파일(s3) 지우기
         List<String> fileName = mapper.selectFilesByBoardId(id);
+
         for (String file : fileName) {
             String key = STR."prj1114/\{id}/\{file}";
             DeleteObjectRequest dor = DeleteObjectRequest.builder()
                     .bucket(bucketName)
                     .key(key)
                     .build();
+
             s3.deleteObject(dor);
+
         }
+
         // db 지우기
         mapper.deleteFileByBoardId(id);
+
         // 댓글 지우기
         commentMapper.deleteByBoardId(id);
-
 
         int cnt = mapper.deleteById(id);
         return cnt == 1;
     }
 
-    public boolean update(Board board) {
+    public boolean update(Board board, List<String> removeFiles) {
+        for (String file : removeFiles) {
+            String key = STR."prj1114/\{board.getId()}/\{file}";
+            DeleteObjectRequest dor = DeleteObjectRequest.builder()
+                    .bucket(bucketName)
+                    .key(key)
+                    .build();
+
+            // s3 파일 지우기
+            s3.deleteObject(dor);
+
+            // db 파일 지우기
+            mapper.deleteFileByBoardIdAndName(board.getId(), file);
+        }
+
 
         int cnt = mapper.update(board);
         return cnt == 1;
-        //return false;
     }
 
-    public boolean hashCode(int id, Authentication authentication) {
-         Board board = mapper.selectById(id);
+    public boolean hasAccess(int id, Authentication authentication) {
+        Board board = mapper.selectById(id);
 
-         return board.getWriter().equals(authentication.getName());
+        return board.getWriter().equals(authentication.getName());
     }
 }
