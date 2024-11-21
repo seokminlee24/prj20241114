@@ -2,11 +2,13 @@ package com.example.backend.mapper.borad;
 
 import com.example.backend.dto.borad.Board;
 import org.apache.ibatis.annotations.*;
+import org.springframework.beans.factory.annotation.Value;
 
 import java.util.List;
 
 @Mapper
 public interface BoardMapper {
+
 
     @Insert("""
             INSERT INTO board

@@ -4,6 +4,7 @@ import com.example.backend.dto.borad.Board;
 import com.example.backend.dto.borad.BoardFile;
 import com.example.backend.mapper.borad.BoardMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,6 +22,8 @@ public class BoardService {
 
     final BoardMapper mapper;
 
+    @Value("${image.src.prefix}")
+    String imageSrcPrefix;
 
     public Map<String, Object> list(Integer page, String searchType, String keyword) {
         // SQL 의 LIMIT 키워드에서 사용되는 offset
@@ -37,7 +40,7 @@ public class BoardService {
         Board board = mapper.selectById(id);
         List<String> fileNameList =  mapper.selectFilesByBoardId(id);
         List<BoardFile> fileSrcList = fileNameList.stream()
-                .map(name->new BoardFile(name,STR." http://172.30.1.9:8081/\{id}/\{name}"))
+                .map(name->new BoardFile(name,STR." {imageSrcPrefix}/\{id}/\{name}"))
                         .toList();
         //  http://172.30.1.9:8081
         board.setFileList(fileSrcList);
