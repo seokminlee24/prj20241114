@@ -96,21 +96,24 @@ public class BoardController {
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<Map<String, Object>> add(
             Board board,
-            @RequestParam(value = "files[]",required = false) MultipartFile[] files,
+            @RequestParam(value = "files[]", required = false) MultipartFile[] files,
             Authentication authentication) {
 
         if (service.validate(board)) {
-            if (service.add(board,files,authentication)) {
-                return ResponseEntity.ok().body(Map.of("message", Map.of("type", "success",
-                                "text", STR."\{board.getId()} 번 게시물이 등록되었습니다"),
-                        "data", board));
+            if (service.add(board, files, authentication)) {
+                return ResponseEntity.ok()
+                        .body(Map.of("message", Map.of("type", "success",
+                                        "text", STR."\{board.getId()}번 게시물이 등록되었습니다"),
+                                "data", board));
             } else {
-                return ResponseEntity.ok().body(Map.of("message", Map.of("type", "warning",
-                        "text", "게시물 등록이 실패하였습니다.")));
+                return ResponseEntity.internalServerError()
+                        .body(Map.of("message", Map.of("type", "warning",
+                                "text", "게시물 등록이 실패하였습니다.")));
             }
         } else {
             return ResponseEntity.badRequest().body(Map.of("message", Map.of("type", "warning",
                     "text", "제목이나 본문이 비어있을 수 없습니다.")));
         }
+
     }
 }

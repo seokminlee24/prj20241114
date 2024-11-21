@@ -37,11 +37,14 @@ public class BoardService {
     }
 
     public boolean add(Board board, MultipartFile[] files, Authentication authentication) {
+
+
         board.setWriter(authentication.getName());
 
         int cnt = mapper.insert(board);
 
         if (files != null && files.length > 0) {
+
             // 폴더 만들기
             String directory = STR."C:/Temp/prj1114/\{board.getId()}";
             File dir = new File(directory);
@@ -49,20 +52,26 @@ public class BoardService {
                 dir.mkdirs();
             }
 
-            //파일 업로드
+            // 파일 업로드
             // TODO : local -> aws
             for (MultipartFile file : files) {
+
                 String filePath = STR."C:/Temp/prj1114/\{board.getId()}/\{file.getOriginalFilename()}";
                 try {
                     file.transferTo(new File(filePath));
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
+
+                // board_file 테이블에 파일명 입력
+                mapper.insertFile(board.getId(), file.getOriginalFilename());
             }
+
+
         }
 
-        //return false;
         return cnt == 1;
+
     }
 
     public boolean validate(Board board) {
