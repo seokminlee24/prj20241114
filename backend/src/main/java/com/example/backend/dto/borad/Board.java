@@ -1,5 +1,6 @@
 package com.example.backend.dto.borad;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -14,5 +15,5 @@ public class Board {
     private LocalDateTime inserted;
 
     private Integer countComment;
-    private List<String> fileSrc;
+    private List<BoardFile> fileList;
 }

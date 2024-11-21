@@ -17,7 +17,6 @@ import {
 } from "../../components/ui/dialog.jsx";
 import {AuthenticationContext} from "../../components/content/AuthenticationProvider.jsx";
 import {CommentContainer} from "../coment/CommentContainer.jsx";
-import * as PropTypes from "prop-types";
 
 
 function ImageFileView({ files }) {
@@ -25,8 +24,8 @@ function ImageFileView({ files }) {
         <Box>
             {files.map((file) => (
                 <Image
-                    key={file}
-                    src={file}
+                    key={file.name}
+                    src={file.src}
                     w={"100%"}
                     border={"1px solid black"}
                     m={3}
@@ -80,7 +79,7 @@ export function BoardView() {
           <Field label="본문" readOnly>
             <Textarea value={board.content} />
           </Field>
-            <ImageFileView files={board.fileSrc} />
+            <ImageFileView files={board.fileList} />
           <Field label="작성자" readOnly>
             <Input value={board.writer} />
           </Field>
