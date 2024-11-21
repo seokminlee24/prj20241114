@@ -41,4 +41,11 @@ SET comment=#{comment}
                 WHERE id = #{id}
 """)
     int update(Comment comment);
+
+    @Delete("""
+            DELETE FROM comment
+            WHERE board_id=#{id}
+            """)
+
+    int deleteByBoardId(int id);
 }
