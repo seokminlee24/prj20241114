@@ -24,3 +24,4 @@ SELECT  b.id,b.title,(SELECT COUNT(*) FROM comment c WHERE c.board_id = b.id) ëŒ
 FROM board b
 GROUP BY b.id
 ORDER BY b.id DESC;
+
