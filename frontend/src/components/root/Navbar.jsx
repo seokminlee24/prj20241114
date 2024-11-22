@@ -34,7 +34,7 @@ export function Navbar() {
     );
 
     return (
-        <Flex gap={3}>
+        <Flex gap={3} mb={10}>
             <NavbarItem onClick={() => navigate("/")}>HOME</NavbarItem>
             {isAuthenticated && (
                 <NavbarItem onClick={() => navigate("/add")}>
