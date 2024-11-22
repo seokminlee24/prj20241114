@@ -19,7 +19,7 @@ import {
 
 import {AuthenticationContext} from "../../components/content/AuthenticationProvider.jsx";
 import {CommentContainer} from "../coment/CommentContainer.jsx";
-import {GoHeart} from "react-icons/go";
+import {GoHeart, GoHeartFill} from "react-icons/go";
 
 function ImageFileView({ files }) {
     return (
@@ -39,6 +39,7 @@ function ImageFileView({ files }) {
 export function BoardView() {
     const { id } = useParams();
     const [board, setBoard] = useState(null);
+    const [like, setLike] = useState({ like: false, count: 0 });
     const navigate = useNavigate();
     const { hasAccess } = useContext(AuthenticationContext);
 
@@ -75,7 +76,8 @@ export function BoardView() {
             .post("/api/board/like", {
                 id: board.id,
             })
-            .then()
+            .then((res)=>res.data)
+            .then((data)=>setLike(data))
             .catch()
             .finally();
     };
@@ -87,11 +89,12 @@ export function BoardView() {
                 <HStack>
                     <Box onClick={handleLikeClick}>
                         <Heading>
-                            <GoHeart />
+                            {like.like || <GoHeart />}
+                            {like.like && <GoHeartFill />}
                         </Heading>
                     </Box>
                     <Box>
-                        <Heading>3</Heading>
+                        <Heading>{like.count}</Heading>
                     </Box>
                 </HStack>
             </Flex>
