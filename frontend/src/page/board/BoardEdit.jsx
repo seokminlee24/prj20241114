@@ -48,6 +48,7 @@ export function BoardEdit() {
   const [progress, setProgress] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [removeFiles, setRemoveFiles] = useState([]);
+  const [uploadFiles, setUploadFiles] = useState([]);
 
   const { hasAccess } = useContext(AuthenticationContext);
 
@@ -77,6 +78,7 @@ export function BoardEdit() {
           title: board.title,
           content: board.content,
           removeFiles,
+          uploadFiles
         })
         .then((res) => res.data)
         .then((data) => {
@@ -129,6 +131,23 @@ export function BoardEdit() {
               files={board.fileList}
               onRemoveSwitchClick={handleRemoveSwitchClick}
           />
+          <Box>
+            <Box>
+              <input
+                  onChange={(e) => setUploadFiles(e.target.files)}
+                  type={"file"}
+                  multiple
+                  accept={"image/*"}
+              />
+            </Box>
+            <Box>
+              {Array.from(uploadFiles).map((file) => (
+                  <li key={file.name}>
+                    {file.name} ({Math.floor(file.size / 1024)} kb)
+                  </li>
+              ))}
+            </Box>
+          </Box>
           {hasAccess(board.writer) && (
               <Box>
                 <DialogRoot

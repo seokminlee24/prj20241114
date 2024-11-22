@@ -16,8 +16,6 @@ import software.amazon.awssdk.services.s3.model.DeleteObjectRequest;
 import software.amazon.awssdk.services.s3.model.ObjectCannedACL;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 
-import javax.swing.plaf.synth.Region;
-import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
@@ -132,7 +130,7 @@ public class BoardService {
         return cnt == 1;
     }
 
-    public boolean update(Board board, List<String> removeFiles) {
+    public boolean update(Board board, List<String> removeFiles, List<MultipartFile> uploadFiles) {
         if (removeFiles != null) {
             for (String file : removeFiles) {
                 String key = STR."prj1114/\{board.getId()}/\{file}";
@@ -148,6 +146,24 @@ public class BoardService {
                 mapper.deleteFileByBoardIdAndName(board.getId(), file);
             }
         }
+
+        if (uploadFiles != null && uploadFiles.size() > 0) {
+            for (MultipartFile file : uploadFiles) {
+                String objectKey = STR."prj1114/\{board.getId()}/\{file.getOriginalFilename()}";
+                PutObjectRequest por = PutObjectRequest.builder()
+                        .bucket(bucketName)
+                        .key(objectKey)
+                        .acl(ObjectCannedACL.PUBLIC_READ)
+                        .build();
+
+                try {
+                    s3.putObject(por,RequestBody.fromInputStream(file.getInputStream(), file.getSize()));
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }
+
 
 
         int cnt = mapper.update(board);
