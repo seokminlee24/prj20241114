@@ -1,18 +1,19 @@
-import {Badge, Box, Center, Heading, HStack, Input, Table} from "@chakra-ui/react";
-import { useEffect, useState } from "react";
+import {Badge, Box, Center, HStack, Input, Table} from "@chakra-ui/react";
+import {useEffect, useState} from "react";
 import axios from "axios";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import {useNavigate, useSearchParams} from "react-router-dom";
 import {
   PaginationItems,
   PaginationNextTrigger,
   PaginationPrevTrigger,
   PaginationRoot,
 } from "../../components/ui/pagination.jsx";
-import { Button } from "../../components/ui/button.jsx";
-import { FaCommentDots, FaImages } from "react-icons/fa6";
+import {Button} from "../../components/ui/button.jsx";
+import {FaCommentDots, FaImages} from "react-icons/fa6";
 import {GoHeartFill} from "react-icons/go";
 import {CiHashtag, CiSearch, CiUser} from "react-icons/ci";
 import {IoCalendar} from "react-icons/io5";
+import {MyHeading} from "../../components/root/MyHeading.jsx";
 
 export function BoardList() {
   const [boardList, setBoardList] = useState([]);
@@ -96,7 +97,7 @@ export function BoardList() {
 
   return (
       <Box>
-        <Heading size={{base: "xl", md:"2xl"}} mb={7}>게시물 목록</Heading>
+        <MyHeading>게시물 목록</MyHeading>
         {/*<Box hideFrom={"md"}>hi</Box>*/}
         {/*<Box hideBelow={"md"}>hello</Box>*/}
         {boardList.length > 0 ? (
