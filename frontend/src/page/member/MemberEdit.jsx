@@ -15,6 +15,7 @@ import {
 } from "../../components/ui/dialog.jsx";
 import { Button } from "../../components/ui/button.jsx";
 import { toaster } from "../../components/ui/toaster.jsx";
+import {MyHeading} from "../../components/root/MyHeading.jsx";
 
 export function MemberEdit() {
   const { id } = useParams();
@@ -110,8 +111,13 @@ export function MemberEdit() {
   }
 
   return (
-    <Box>
-      <h3>회원 정보</h3>
+      <Box
+          mx={"auto"}
+          w={{
+            md: "500px",
+          }}
+      >
+        <MyHeading>회원 정보 수정</MyHeading>
       <Stack gap={5}>
         <Field readOnly label={"아이디"}>
           <Input defaultValue={member.id} />
