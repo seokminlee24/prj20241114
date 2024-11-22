@@ -10,6 +10,7 @@ import {
 } from "../../components/ui/pagination.jsx";
 import { Button } from "../../components/ui/button.jsx";
 import {FaCommentDots} from "react-icons/fa6";
+import {GoHeartFill} from "react-icons/go";
 
 export function BoardList() {
   const [boardList, setBoardList] = useState([]);

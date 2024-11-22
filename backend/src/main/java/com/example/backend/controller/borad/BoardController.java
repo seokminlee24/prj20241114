@@ -22,7 +22,7 @@ public class BoardController {
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<Map<String, Object>> update(@RequestBody Board board,
                                                       Authentication authentication) {
-        if (service.hashCode(board.getId(),authentication)) {
+        if (service.hasAccess(board.getId(),authentication)) {
 
 
             if (service.validate(board)) {
@@ -52,7 +52,7 @@ public class BoardController {
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<Map<String, Object>> delete(@PathVariable int id,
                                                       Authentication authentication) {
-        if (service.hashCode(id,authentication)){
+        if (service.hasAccess(id,authentication)){
             if (service.remove(id)) {
                 return ResponseEntity.ok()
                         .body(Map.of("message", Map.of("type", "success"
