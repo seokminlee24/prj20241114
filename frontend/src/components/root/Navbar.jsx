@@ -1,9 +1,11 @@
 import { useNavigate } from "react-router-dom";
-import { Box, Flex } from "@chakra-ui/react";
+import { Box, Flex, Icon, Text } from "@chakra-ui/react";
 import { useContext } from "react";
-import {AuthenticationContext} from "../content/AuthenticationProvider.jsx";
-import * as PropTypes from "prop-types";
 
+import { HiOutlinePencilSquare, HiOutlineUserPlus } from "react-icons/hi2";
+import { PiAddressBookTabsThin } from "react-icons/pi";
+import { CiLogin, CiLogout, CiUser } from "react-icons/ci";
+import {AuthenticationContext} from "../content/AuthenticationProvider.jsx";
 
 function NavbarItem({ children, ...rest }) {
     return (
@@ -27,31 +29,46 @@ export function Navbar() {
     const navigate = useNavigate();
 
     // step 2 : context 사용하기
-    const {id, isAdmin, isAuthenticated, logout} = useContext(AuthenticationContext)
+    const { id, isAdmin, isAuthenticated, logout } = useContext(
+        AuthenticationContext,
+    );
 
     return (
         <Flex gap={3}>
-            <NavbarItem css={{
-                paddingX : "15px",
-                paddingY : "10px"
-            }}
-                 _hover={{bgColor: "gray.300",
-                 cursor:"pointer"}}
-                 onClick={() => navigate("/")}>HOME</NavbarItem>
+            <NavbarItem onClick={() => navigate("/")}>HOME</NavbarItem>
             {isAuthenticated && (
-                <NavbarItem onClick={() => navigate("/add")}>작성</NavbarItem>
+                <NavbarItem onClick={() => navigate("/add")}>
+                    <Icon hideFrom={"sm"}>
+                        <HiOutlinePencilSquare />
+                    </Icon>
+                    <Text hideBelow={"sm"}>작성</Text>
+                </NavbarItem>
             )}
             <Box mx={"auto"}></Box>
             {isAuthenticated || (
-                <NavbarItem onClick={() => navigate("/member/signup")}>가입</NavbarItem>
+                <NavbarItem onClick={() => navigate("/member/signup")}>
+                    <Icon hideFrom={"sm"}>
+                        <HiOutlineUserPlus />
+                    </Icon>
+                    <Text hideBelow={"sm"}>가입</Text>
+                </NavbarItem>
             )}
-
             {isAdmin && (
-                <NavbarItem onClick={() => navigate("/member/list")}>회원목록</NavbarItem>
+                <NavbarItem onClick={() => navigate("/member/list")}>
+                    <Icon hideFrom={"sm"}>
+                        <PiAddressBookTabsThin />
+                    </Icon>
+                    <Text hideBelow={"sm"}>회원목록</Text>
+                </NavbarItem>
             )}
 
             {isAuthenticated || (
-                <NavbarItem onClick={() => navigate("/member/login")}>로그인</NavbarItem>
+                <NavbarItem onClick={() => navigate("/member/login")}>
+                    <Icon hideFrom={"sm"}>
+                        <CiLogin />
+                    </Icon>
+                    <Text hideBelow={"sm"}>로그인</Text>
+                </NavbarItem>
             )}
             {isAuthenticated && (
                 <NavbarItem
@@ -60,10 +77,21 @@ export function Navbar() {
                         navigate("/member/login");
                     }}
                 >
-                    로그아웃
+                    <Icon hideFrom={"sm"}>
+                        <CiLogout />
+                    </Icon>
+                    <Text hideBelow={"sm"}>로그아웃</Text>
                 </NavbarItem>
             )}
-            <NavbarItem onClick={()=>navigate(`/member/${id}`)}>{id}</NavbarItem>
+            {isAuthenticated && (
+                <NavbarItem onClick={() => navigate(`/member/${id}`)}>
+                    <Icon hideFrom={"sm"}>
+                        <CiUser />
+                    </Icon>
+
+                    <Text hideBelow={"sm"}>{id}</Text>
+                </NavbarItem>
+            )}
         </Flex>
     );
 }
