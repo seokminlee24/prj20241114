@@ -34,8 +34,8 @@ export function CommentInput({ boardId, onSaveClick }) {
                     onSaveClick(comment)
                 }}
                     variant={"surface"}
-                    colorPalette={"blue"}>
-                    px={5}
+                    colorPalette={"blue"}
+                    px={5}>
                     <FaPaperPlane />
                 </Button>
             </Group>
