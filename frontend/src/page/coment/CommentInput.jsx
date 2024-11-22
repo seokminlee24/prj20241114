@@ -4,6 +4,7 @@ import {useContext, useState} from "react";
 import axios from "axios";
 import {Button} from "../../components/ui/button.jsx";
 import {AuthenticationContext} from "../../components/content/AuthenticationProvider.jsx";
+import {FaPaperPlane} from "react-icons/fa";
 
 export function CommentInput({ boardId, onSaveClick }) {
     const [comment, setComment] = useState("");
@@ -13,7 +14,7 @@ export function CommentInput({ boardId, onSaveClick }) {
         <Box>
             <Group h={125} attached w={"100%"}>
                 <Textarea
-                    h={125}
+                    h={127}
                     flex={1}
                     value={comment}
                     disabled={!isAuthenticated}
@@ -31,7 +32,11 @@ export function CommentInput({ boardId, onSaveClick }) {
                     onClick={() => {
                     setComment("")
                     onSaveClick(comment)
-                }}>댓글 쓰기</Button>
+                }}
+                    variant={"surface"}
+                    colorPalette={"blue"}>
+                    <FaPaperPlane />
+                </Button>
             </Group>
         </Box>
     );
