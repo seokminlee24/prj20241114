@@ -1,6 +1,6 @@
 import { useNavigate, useParams } from "react-router-dom";
 import {
-  Box,
+  Box, Card,
   HStack,
   Image,
   Input,
@@ -26,17 +26,24 @@ import { toaster } from "../../components/ui/toaster.jsx";
 
 import { Switch } from "../../components/ui/switch.jsx";
 import {AuthenticationContext} from "../../components/content/AuthenticationProvider.jsx";
+import {CiTrash} from "react-icons/ci";
+import {MyHeading} from "../../components/root/MyHeading.jsx";
 
 function ImageView({ files, onRemoveSwitchClick }) {
   return (
       <Box>
         {files.map((file) => (
-            <HStack key={file.name}>
+            <HStack key={file.name} my={3}>
               <Switch
+                  thumbLabel={{
+                    on: <CiTrash />,
+                  }}
                   colorPalette={"red"}
                   onCheckedChange={(e) => onRemoveSwitchClick(e.checked, file.name)}
               />
-              <Image border={"1px solid black"} m={5} src={file.src} />
+              <Box>
+                <Image border={"1px solid black"} src={file.src} />
+              </Box>
             </HStack>
         ))}
       </Box>
@@ -112,8 +119,11 @@ export function BoardEdit() {
   );
 
   return (
-      <Box>
-        <h3>{id}번 게시물 수정</h3>
+      <Box mx={"auto"}
+           w={{
+             md: "500px",
+           }}>
+        <MyHeading>{id}번 게시물 수정</MyHeading>
         <Stack gap={5}>
           <Field label={"제목"}>
             <Input
@@ -123,6 +133,7 @@ export function BoardEdit() {
           </Field>
           <Field label={"본문"}>
             <Textarea
+                h={250}
                 value={board.content}
                 onChange={(e) => setBoard({ ...board, content: e.target.value })}
             />
@@ -133,18 +144,32 @@ export function BoardEdit() {
           />
           <Box>
             <Box>
-              <input
-                  onChange={(e) => setUploadFiles(e.target.files)}
-                  type={"file"}
-                  multiple
-                  accept={"image/*"}
-              />
+              <Field label={"파일 업로드"}>
+                <input
+                    onChange={(e) => setUploadFiles(e.target.files)}
+                    type={"file"}
+                    multiple
+                    accept={"image/*"}
+                />
+              </Field>
             </Box>
             <Box>
               {Array.from(uploadFiles).map((file) => (
-                  <li key={file.name}>
-                    {file.name} ({Math.floor(file.size / 1024)} kb)
-                  </li>
+                  <Card.Root size={"sm"}>
+                    <Card.Body>
+                      <HStack>
+                        <Text
+                            css={{ color: file.size > 1024 * 1024 ? "red" : "black" }}
+                            fontWeight={"bold"}
+                            me={"auto"}
+                            truncate
+                        >
+                          {file.name}
+                        </Text>
+                        <Text>{Math.floor(file.size / 1024)} KB</Text>
+                      </HStack>
+                    </Card.Body>
+                  </Card.Root>
               ))}
             </Box>
           </Box>
@@ -155,12 +180,8 @@ export function BoardEdit() {
                     onOpenChange={(e) => setDialogOpen(e.open)}
                 >
                   <DialogTrigger asChild>
-                    <Button
-                        disabled={disabled}
-                        colorPalette={"cyan"}
-                        variant={"outline"}
-                    >
-                      저장
+                    <Button disabled={disabled} colorPalette={"blue"}>
+                        저장
                     </Button>
                   </DialogTrigger>
                   <DialogContent>
