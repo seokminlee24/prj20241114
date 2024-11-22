@@ -64,6 +64,8 @@ public class MemberService {
                     boardService.remove(boardId);
                 }
 
+                // 기존 암호와  비교
+                boardMapper.deleteLikeByMemberId(member.getId());
 
                 cnt = mapper.deleteById(member.getId());
             }

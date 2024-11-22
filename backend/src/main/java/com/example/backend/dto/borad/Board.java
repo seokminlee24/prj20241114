@@ -16,6 +16,7 @@ public class Board {
 
     private Integer countComment;
     private Integer countFile ;
+    private Integer countLike;
 
 
     private List<BoardFile> fileList;
