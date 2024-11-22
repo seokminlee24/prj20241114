@@ -1,9 +1,9 @@
 import { Box, Group, Textarea } from "@chakra-ui/react";
 
-import {useContext, useState} from "react";
-import axios from "axios";
-import {Button} from "../../components/ui/button.jsx";
+import { useContext, useState } from "react";
 import {AuthenticationContext} from "../../components/content/AuthenticationProvider.jsx";
+import {Button} from "../../components/ui/button.jsx";
+
 
 export function CommentInput({ boardId, onSaveClick }) {
     const [comment, setComment] = useState("");
@@ -11,22 +11,29 @@ export function CommentInput({ boardId, onSaveClick }) {
 
     return (
         <Box>
-            <Group>
+            <Group h={125} attached w={"100%"}>
                 <Textarea
+                    h={200}
+                    flex={1}
                     value={comment}
                     disabled={!isAuthenticated}
-                    placeholder={isAuthenticated ? "" : "로그인 후 댓글을 남겨주세요."}
-                    onChange={
-                    (e) => {
-                        setComment(e.target.value)
-                    }}
+                    placeholder={
+                        isAuthenticated
+                            ? "댓글을 남겨주세요."
+                            : "로그인 후 댓글을 남겨주세요."
+                    }
+                    onChange={(e) => setComment(e.target.value)}
                 />
                 <Button
+                    h={125}
                     disabled={!isAuthenticated}
                     onClick={() => {
-                    setComment("")
-                    onSaveClick(comment)
-                }}>댓글 쓰기</Button>
+                        setComment("");
+                        onSaveClick(comment);
+                    }}
+                >
+                    댓글 쓰기
+                </Button>
             </Group>
         </Box>
     );

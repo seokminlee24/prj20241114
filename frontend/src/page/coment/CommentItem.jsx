@@ -1,4 +1,4 @@
-import { Box, Flex, HStack, Textarea } from "@chakra-ui/react";
+import {Box, Card, Flex, Heading, HStack, Textarea} from "@chakra-ui/react";
 
 import { useContext, useState } from "react";
 
@@ -13,6 +13,7 @@ import {
     DialogTrigger
 } from "../../components/ui/dialog.jsx";
 import {AuthenticationContext} from "../../components/content/AuthenticationProvider.jsx";
+import {CiEdit} from "react-icons/ci";
 
 function DeleteButton({ onClick }) {
     const [open, setOpen] = useState(false);
@@ -21,7 +22,9 @@ function DeleteButton({ onClick }) {
         <>
             <DialogRoot open={open} onOpenChange={(e) => setOpen(e.open)}>
                 <DialogTrigger asChild>
-                    <Button colorPalette={"red"}>삭제</Button>
+                    <Button colorPalette={"red"} size={"sm"} variant={"subtle"}>
+                        <CiTrash />
+                    </Button>
                 </DialogTrigger>
                 <DialogContent>
                     <DialogHeader>
@@ -52,7 +55,9 @@ function EditButton({ comment, onEditClick }) {
         <>
             <DialogRoot open={open} onOpenChange={(e) => setOpen(e.open)}>
                 <DialogTrigger asChild>
-                    <Button colorPalette={"purple"}>수정</Button>
+                    <Button colorPalette={"purple"} size={"sm"} variant={"subtle"}>
+                        <CiEdit />
+                    </Button>
                 </DialogTrigger>
                 <DialogContent>
                     <DialogHeader>
@@ -88,22 +93,25 @@ export function CommentItem({ comment, onDeleteClick, onEditClick }) {
     const { hasAccess } = useContext(AuthenticationContext);
 
     return (
-        <HStack border={"1px solid black"} m={5}>
-            <Box flex={1}>
+        <Card.Root>
+            <Card.Header>
                 <Flex justify={"space-between"}>
-                    <h3>{comment.memberId}</h3>
-                    <h4>{comment.inserted}</h4>
+                    <Heading>{comment.memberId}</Heading>
+                    <Heading>{comment.inserted}</Heading>
                 </Flex>
-                {/*<p style={{whiteSpace:"pre"}}>{comment.comment}</p>*/}
-                <Box css={{whiteSpace:"pre"}}>{comment.comment}</Box>
-            </Box>
+            </Card.Header>
+            <Card.Body>
+                <Box css={{ whiteSpace: "pre" }}>{comment.comment}</Box>
+            </Card.Body>
             {hasAccess(comment.memberId) && (
-                <Box>
-                    <EditButton comment={comment} onEditClick={onEditClick} />
+                <Card.Footer css={{ justifyContent: "flex-end" }}>
+                    <HStack>
+                        <EditButton comment={comment} onEditClick={onEditClick} />
 
-                    <DeleteButton onClick={() => onDeleteClick(comment.id)} />
-                </Box>
+                        <DeleteButton onClick={() => onDeleteClick(comment.id)} />
+                    </HStack>
+                </Card.Footer>
             )}
-        </HStack>
+        </Card.Root>
     );
 }

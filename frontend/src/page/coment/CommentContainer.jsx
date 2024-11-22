@@ -1,10 +1,18 @@
-import { Box, Stack } from "@chakra-ui/react";
+import { Box, HStack, Icon, Stack, Text } from "@chakra-ui/react";
 import { CommentInput } from "./CommentInput.jsx";
 import { CommentList } from "./CommentList.jsx";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import {toaster} from "../../components/ui/toaster.jsx";
 
+import { FaCommentDots } from "react-icons/fa6";
+import {toaster} from "../../components/ui/toaster.jsx";
+import * as PropTypes from "prop-types";
+
+function MyHeading(props) {
+    return null;
+}
+
+MyHeading.propTypes = {children: PropTypes.node};
 
 export function CommentContainer({ boardId }) {
     const [commentList, setCommentList] = useState([]);
@@ -49,12 +57,12 @@ export function CommentContainer({ boardId }) {
         setProcessing(true);
 
         axios
-            .put("/api/comment/edit", { id, comment })
+            .put(`/api/comment/edit`, { id, comment })
             .then((res) => res.data.message)
             .then((message) => {
                 toaster.create({
-                   type: message.type,
-                    description: message.text
+                    type: message.type,
+                    description: message.text,
                 });
             })
             .finally(() => {
@@ -63,9 +71,20 @@ export function CommentContainer({ boardId }) {
     }
 
     return (
-        <Box>
+        <Box my={10}>
             <Stack gap={5}>
-                <h3>댓글</h3>
+                <HStack>
+                    <MyHeading>댓글</MyHeading>
+
+                    <Text mb={7} fontSize={"xl"}>
+                        <Icon>
+                            <FaCommentDots />
+                        </Icon>
+                    </Text>
+                    <Text mb={7} fontSize={"xl"}>
+                        {commentList.length}
+                    </Text>
+                </HStack>
                 <CommentInput boardId={boardId} onSaveClick={handleSaveClick} />
                 <CommentList
                     boardId={boardId}
