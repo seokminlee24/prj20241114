@@ -1,5 +1,5 @@
 import {Badge, Box, Heading, HStack, Input, Table} from "@chakra-ui/react";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import {
@@ -9,7 +9,7 @@ import {
   PaginationRoot,
 } from "../../components/ui/pagination.jsx";
 import { Button } from "../../components/ui/button.jsx";
-import {FaCommentDots} from "react-icons/fa6";
+import {FaCommentDots,FaImages} from "react-icons/fa6";
 import {GoHeartFill} from "react-icons/go";
 
 export function BoardList() {
@@ -94,19 +94,15 @@ export function BoardList() {
 
   return (
       <Box>
-        <Heading size={{ base: "xl", md: "2xl" }}>게시물 목록</Heading>
-
+        <h3>게시물 목록</h3>
         {boardList.length > 0 ? (
             <Table.Root interactive>
               <Table.Header>
                 <Table.Row>
                   <Table.ColumnHeader>번호</Table.ColumnHeader>
                   <Table.ColumnHeader>제목</Table.ColumnHeader>
-                  <Table.ColumnHeader>
-                    <GoHeartFill />
-                  </Table.ColumnHeader>
                   <Table.ColumnHeader>작성자</Table.ColumnHeader>
-                  <Table.ColumnHeader hideBelow={"md"}>작성일시</Table.ColumnHeader>
+                  <Table.ColumnHeader>작성일시</Table.ColumnHeader>
                 </Table.Row>
               </Table.Header>
               <Table.Body>
@@ -131,11 +127,8 @@ export function BoardList() {
                             </Badge>
                         )}
                       </Table.Cell>
-                      <Table.Cell>
-                        {board.countLike > 0 ? board.countLike : ""}
-                      </Table.Cell>
                       <Table.Cell>{board.writer}</Table.Cell>
-                      <Table.Cell hideBelow={"md"}>{board.inserted}</Table.Cell>
+                      <Table.Cell>{board.inserted}</Table.Cell>
                     </Table.Row>
                 ))}
               </Table.Body>
