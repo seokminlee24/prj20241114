@@ -46,7 +46,6 @@ public class CommentController {
             service.remove(id);
         }
     }
-
     @GetMapping("list/{boardId}")
     public List<Comment> list(@PathVariable Integer boardId) {
         return service.list(boardId);
