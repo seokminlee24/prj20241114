@@ -1,6 +1,7 @@
 package com.example.backend.service.borad;
 
 import com.example.backend.dto.borad.Board;
+import com.example.backend.dto.borad.BoardFile;
 import com.example.backend.mapper.borad.BoardMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
@@ -75,7 +76,11 @@ public class BoardService {
 
     public Board get(int id) {
         Board board = mapper.selectById(id);
-        board.setFileSrc(mapper.selectFilesByBoardId(id));
+        List<String> fileNameList = mapper.selectFilesByBoardId(id);
+        List<BoardFile> fileSrcList = fileNameList.stream()
+                .map(name -> new BoardFile(name, STR."http://172.30.1.84:8081/\{id}/\{name}"))
+                .toList();
+        board.setFileList(fileSrcList);
         return board;
     }
 
