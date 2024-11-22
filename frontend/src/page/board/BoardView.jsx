@@ -1,5 +1,5 @@
 import { useNavigate, useParams } from "react-router-dom";
-import { Box, Input, Spinner, Stack, Textarea } from "@chakra-ui/react";
+import {Box, Image, Input, Spinner, Stack, Textarea} from "@chakra-ui/react";
 import { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { Field } from "../../components/ui/field.jsx";
@@ -18,95 +18,111 @@ import {
 import {AuthenticationContext} from "../../components/content/AuthenticationProvider.jsx";
 import {CommentContainer} from "../coment/CommentContainer.jsx";
 
+function ImageFileView({ files }) {
+    return (
+        <Box>
+            {files.map((file) => (
+                <Image
+                    key={file}
+                    src={file}
+                    w={"100%"}
+                    border={"1px solid black"}
+                    m={3}
+                />
+            ))}
+        </Box>
+    );
+}
 
 export function BoardView() {
-  const { id } = useParams();
-  const [board, setBoard] = useState(null);
-  const navigate = useNavigate();
-  const { hasAccess } = useContext(AuthenticationContext);
+    const { id } = useParams();
+    const [board, setBoard] = useState(null);
+    const navigate = useNavigate();
+    const { hasAccess } = useContext(AuthenticationContext);
 
-  useEffect(() => {
-    axios.get(`/api/board/view/${id}`).then((res) => setBoard(res.data));
-  }, []);
+    useEffect(() => {
+        axios.get(`/api/board/view/${id}`).then((res) => setBoard(res.data));
+    }, []);
 
-  if (board === null) {
-    return <Spinner />;
-  }
+    if (board === null) {
+        return <Spinner />;
+    }
 
-  const handleDeleteClick = () => {
-    axios
-        .delete(`/api/board/delete/${board.id}`)
-        .then((res) => res.data)
-        .then((data) => {
-          toaster.create({
-            type: data.message.type,
-            description: data.message.text,
-          });
-          navigate("/");
-        })
-        .catch((e) => {
-          const data = e.response.data;
-          toaster.create({
-            type: data.message.type,
-            description: data.message.text,
-          });
-        });
-  };
+    const handleDeleteClick = () => {
+        axios
+            .delete(`/api/board/delete/${board.id}`)
+            .then((res) => res.data)
+            .then((data) => {
+                toaster.create({
+                    type: data.message.type,
+                    description: data.message.text,
+                });
+                navigate("/");
+            })
+            .catch((e) => {
+                const data = e.response.data;
+                toaster.create({
+                    type: data.message.type,
+                    description: data.message.text,
+                });
+            });
+    };
 
-  return (
-      <Box>
-        <h3>{id} 번 게시물</h3>
-        <Stack gap={5}>
-          <Field label="제목" readOnly>
-            <Input value={board.title} />
-          </Field>
-          <Field label="본문" readOnly>
-            <Textarea value={board.content} />
-          </Field>
-          <Field label="작성자" readOnly>
-            <Input value={board.writer} />
-          </Field>
-          <Field label="작성일시" readOnly>
-            <Input value={board.inserted} type={"datetime-local"} />
-          </Field>
-          {hasAccess(board.writer) && (
-              <Box>
-                <DialogRoot>
-                  <DialogTrigger asChild>
-                    <Button colorPalette={"red"} variant={"outline"}>
-                      삭제
-                    </Button>
-                  </DialogTrigger>
-                  <DialogContent>
-                    <DialogHeader>
-                      <DialogTitle>삭제 확인</DialogTitle>
-                    </DialogHeader>
-                    <DialogBody>
-                      <p>{board.id}번 게시물을 삭제하시겠습니까?</p>
-                    </DialogBody>
-                    <DialogFooter>
-                      <DialogActionTrigger>
-                        <Button variant={"outline"}>취소</Button>
-                      </DialogActionTrigger>
-                      <Button colorPalette={"red"} onClick={handleDeleteClick}>
-                        삭제
-                      </Button>
-                    </DialogFooter>
-                  </DialogContent>
-                </DialogRoot>
-                <Button
-                    colorPalette={"cyan"}
-                    onClick={() => navigate(`/edit/${board.id}`)}
-                >
-                  수정
-                </Button>
-              </Box>
-          )}
-        </Stack>
+    return (
+        <Box>
+            <h3>{id} 번 게시물</h3>
+            <Stack gap={5}>
+                <Field label="제목" readOnly>
+                    <Input value={board.title} />
+                </Field>
+                <Field label="본문" readOnly>
+                    <Textarea value={board.content} />
+                </Field>
+                <ImageFileView files={board.fileSrc} />
+                <Field label="작성자" readOnly>
+                    <Input value={board.writer} />
+                </Field>
+                <Field label="작성일시" readOnly>
+                    <Input value={board.inserted} type={"datetime-local"} />
+                </Field>
+                {hasAccess(board.writer) && (
+                    <Box>
+                        <DialogRoot>
+                            <DialogTrigger asChild>
+                                <Button colorPalette={"red"} variant={"outline"}>
+                                    삭제
+                                </Button>
+                            </DialogTrigger>
+                            <DialogContent>
+                                <DialogHeader>
+                                    <DialogTitle>삭제 확인</DialogTitle>
+                                </DialogHeader>
+                                <DialogBody>
+                                    <p>{board.id}번 게시물을 삭제하시겠습니까?</p>
+                                </DialogBody>
+                                <DialogFooter>
+                                    <DialogActionTrigger>
+                                        <Button variant={"outline"}>취소</Button>
+                                    </DialogActionTrigger>
+                                    <Button colorPalette={"red"} onClick={handleDeleteClick}>
+                                        삭제
+                                    </Button>
+                                </DialogFooter>
+                            </DialogContent>
+                        </DialogRoot>
+                        <Button
+                            colorPalette={"cyan"}
+                            onClick={() => navigate(`/edit/${board.id}`)}
+                        >
+                            수정
+                        </Button>
+                    </Box>
+                )}
+            </Stack>
 
-        <hr />
+            <hr />
 
-        <CommentContainer boardId={board.id} />
-      </Box>
-  );
+            <CommentContainer boardId={board.id} />
+        </Box>
+    );
 }
