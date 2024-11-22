@@ -132,7 +132,7 @@ public interface BoardMapper {
 
     @Insert("""
             INSERT INTO board_like
-            VALUES (#{id}, #{name})
+            VALUES (#{id }, #{name})
             """)
     void insertLike(Integer id, String name);
 

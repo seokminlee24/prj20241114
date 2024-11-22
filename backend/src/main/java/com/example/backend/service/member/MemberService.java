@@ -48,7 +48,7 @@ public class MemberService {
     public boolean remove(Member member) {
         int cnt = 0;
 
-        // 기존 암호와 비교
+        // 기존 암호와  비교
         Member db = mapper.selectById(member.getId());
 
         if (db != null) {

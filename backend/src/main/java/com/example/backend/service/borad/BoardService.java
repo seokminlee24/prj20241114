@@ -116,7 +116,7 @@ public class BoardService {
                     .key(key)
                     .build();
 
-            s3.deleteObject(dor);
+            s3.deleteObject(dor );
 
         }
 
