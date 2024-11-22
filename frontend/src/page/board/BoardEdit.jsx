@@ -1,11 +1,13 @@
 import { useNavigate, useParams } from "react-router-dom";
 import {
-  Box, Card,
+  Box,
+  Card,
   HStack,
   Image,
   Input,
   Spinner,
   Stack,
+  Text,
   Textarea,
 } from "@chakra-ui/react";
 import { useContext, useEffect, useState } from "react";
