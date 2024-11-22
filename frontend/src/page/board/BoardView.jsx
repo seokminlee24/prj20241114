@@ -30,8 +30,8 @@ function ImageFileView({ files }) {
                 <Image
                     key={file.name}
                     src={file.src}
-                    border={"1px solid black"}
                     my={3}
+                    border={"1px solid black"}
                 />
             ))}
         </Box>
