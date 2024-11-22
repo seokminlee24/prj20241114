@@ -3,6 +3,7 @@ import { Box, Group, Textarea } from "@chakra-ui/react";
 import { useContext, useState } from "react";
 import {AuthenticationContext} from "../../components/content/AuthenticationProvider.jsx";
 import {Button} from "../../components/ui/button.jsx";
+import {FaPaperPlane} from "react-icons/fa";
 
 
 export function CommentInput({ boardId, onSaveClick }) {
@@ -13,7 +14,7 @@ export function CommentInput({ boardId, onSaveClick }) {
         <Box>
             <Group h={125} attached w={"100%"}>
                 <Textarea
-                    h={125}
+                    h={127}
                     flex={1}
                     value={comment}
                     disabled={!isAuthenticated}
@@ -31,8 +32,10 @@ export function CommentInput({ boardId, onSaveClick }) {
                         setComment("");
                         onSaveClick(comment);
                     }}
+                    variant={"surface"}
+                    colorPalette={"blue"}
                 >
-                    댓글 쓰기
+                    <FaPaperPlane />
                 </Button>
             </Group>
         </Box>
