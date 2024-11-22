@@ -20,6 +20,7 @@ import {
 import {AuthenticationContext} from "../../components/content/AuthenticationProvider.jsx";
 import {CommentContainer} from "../coment/CommentContainer.jsx";
 import {GoHeart, GoHeartFill} from "react-icons/go";
+import {ToggleTip} from "../../components/ui/toggle-tip.jsx";
 
 function ImageFileView({ files }) {
     return (
@@ -40,8 +41,9 @@ export function BoardView() {
     const { id } = useParams();
     const [board, setBoard] = useState(null);
     const [like, setLike] = useState({ like: false, count: 0 });
+    const [likeTooltipOpen, setLikeTooltipOpen] = useState(false);
     const navigate = useNavigate();
-    const { hasAccess } = useContext(AuthenticationContext);
+    const { hasAccess ,isAuthenticated} = useContext(AuthenticationContext);
 
     useEffect(() => {
         axios.get(`/api/board/view/${id}`).then((res) => setBoard(res.data));
@@ -79,14 +81,19 @@ export function BoardView() {
     };
 
     const handleLikeClick = () => {
-        axios
-            .post("/api/board/like", {
-                id: board.id,
-            })
-            .then((res)=>res.data)
-            .then((data)=>setLike(data))
-            .catch()
-            .finally();
+        if (isAuthenticated) {
+            axios
+                .post("/api/board/like", {
+                    id: board.id,
+                })
+                .then((res) => res.data)
+                .then((data) => setLike(data))
+                .catch()
+                .finally();
+        }else {
+            // tooltip 보여주기
+            setLikeTooltipOpen(!likeTooltipOpen);
+        }
     };
 
     return (
@@ -95,10 +102,14 @@ export function BoardView() {
                 <Heading me={"auto"}>{id} 번 게시물</Heading>
                 <HStack>
                     <Box onClick={handleLikeClick}>
+                        <ToggleTip
+                        open={likeTooltipOpen}
+                        content={"로그인 후 좋아요를 클릭해주세요."}>
                         <Heading>
                             {like.like || <GoHeart />}
                             {like.like && <GoHeartFill />}
                         </Heading>
+                        </ToggleTip>
                     </Box>
                     <Box>
                         <Heading>{like.count}</Heading>
