@@ -13,7 +13,7 @@ import {
     DialogTrigger
 } from "../../components/ui/dialog.jsx";
 import {AuthenticationContext} from "../../components/content/AuthenticationProvider.jsx";
-import {CiEdit} from "react-icons/ci";
+import {CiEdit, CiTrash} from "react-icons/ci";
 
 function DeleteButton({ onClick }) {
     const [open, setOpen] = useState(false);
@@ -38,7 +38,7 @@ function DeleteButton({ onClick }) {
                             <Button variant={"outline"}>취소</Button>
                         </DialogActionTrigger>
                         <Button colorPalette={"red"} onClick={onClick}>
-                            삭제
+                            <CiTrash />
                         </Button>
                     </DialogFooter>
                 </DialogContent>
